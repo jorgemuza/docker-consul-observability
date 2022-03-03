@@ -3,7 +3,7 @@ version: "3.8"
 x-restart-policy:
   &restart_policy
   restart: unless-stopped
-  
+
 services:
 
   consul-server:
@@ -107,6 +107,10 @@ services:
       driver: loki
       options:
         loki-url: 'http://localhost:3100/api/prom/push'
+    ports:
+      - 8090:9090
+      - 8091:9091
+
   web_proxy:
     image: nicholasjackson/consul-envoy:v1.11.2-v1.20.1
     container_name: web_proxy
