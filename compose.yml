@@ -6,9 +6,9 @@ x-restart-policy:
 
 services:
 
-  consul-server:
+  consul:
     image: hashicorp/consul:1.11
-    container_name: consul-server
+    container_name: consul
     restart: always
     volumes:
       - ./consul/config.hcl:/consul/config/server.hcl:ro
@@ -50,7 +50,7 @@ services:
     image: nicholasjackson/fake-service:vm-v1.10.7-v0.22.7
     container_name: ingress
     depends_on:
-      - "consul-server"
+      - "consul"
     environment:
       CONSUL_SERVER: 10.5.0.2
       CONSUL_DATACENTER: "dc1"
@@ -76,7 +76,7 @@ services:
     container_name: web
     restart: always
     depends_on:
-      - "consul-server"
+      - "consul"
     environment:
       CONSUL_SERVER: 10.5.0.2
       CONSUL_DATACENTER: "dc1"
@@ -102,7 +102,7 @@ services:
     image: nicholasjackson/fake-service:vm-v1.10.7-v0.22.7
     container_name: api
     depends_on:
-      - "consul-server"
+      - "consul"
     environment:
       CONSUL_SERVER: 10.5.0.2
       CONSUL_DATACENTER: "dc1"

@@ -4,7 +4,7 @@ datacenter = "dc1"
 data_dir = "/consul/data"
 log_level = "INFO"
 retry_join = [
-  "consul-server"
+  "consul"
 ]
 // enable_syslog = true
 // enable_central_service_config = true

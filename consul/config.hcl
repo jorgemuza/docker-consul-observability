@@ -1,4 +1,4 @@
-node_name = "consul-server"
+node_name = "consul"
 server = true
 bootstrap = true
 datacenter = "dc1"
@@ -58,9 +58,5 @@ config_entries {
     config {
       protocol = "http"
     }
-
-    // mesh_gateway = {
-    //   mode = "local"
-    // }
   }
 }
