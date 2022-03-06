@@ -9,6 +9,10 @@ addresses {
   http = "0.0.0.0"
 }
 
+bind_addr = "0.0.0.0"
+client_addr = "0.0.0.0"
+// advertise_addr = "{{GetInterfaceIP \"eth0\"}}"
+
 ui_config {
   enabled = true
 }
@@ -16,10 +20,6 @@ ui_config {
 ports {
   dns = 8600
   grpc = 8502
-}
-
-connect {
-  enabled = true
 }
 
 telemetry {
@@ -41,5 +41,26 @@ service {
     tcp = "localhost:8600"
     interval = "10s"
     timeout = "1s"
+  }
+}
+
+connect {
+  enabled = true
+}
+
+config_entries {
+  # We are using gateways and L7 config set the 
+  # default protocol to HTTP
+  bootstrap {
+    kind = "proxy-defaults"
+    name = "global"
+
+    config {
+      protocol = "http"
+    }
+
+    // mesh_gateway = {
+    //   mode = "local"
+    // }
   }
 }

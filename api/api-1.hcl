@@ -6,6 +6,16 @@ log_level = "INFO"
 retry_join = [
   "consul-server"
 ]
+// enable_syslog = true
+// enable_central_service_config = true
+// enable_script_checks = true
+// node_meta {
+//    java-version = "No default java",
+//    server-type = "application",
+//    cluster-type = "common",
+//    patch-set = "2021Q4"
+// }
+// ports {  "grpc" = 8502  }
 
 service {
   id = "api-v1"
