@@ -15,21 +15,11 @@ Routes = [
  {
    Match {
      HTTP {
-       PathPrefix = "/web"
-     }
-   }
-   Destination {
-     Service = "web"
-   }
- },
- {
-   Match {
-     HTTP {
        PathPrefix = "/"
      }
    }
    Destination {
-     Service = "ingress"
+     Service = "web"
    }
  },
 ]

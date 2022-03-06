@@ -11,8 +11,8 @@ services:
     container_name: consul
     restart: always
     volumes:
-      - ./consul/config.hcl:/consul/config/server.hcl:ro
-      - "./consul:/scripts"
+      - ./configs/consul/config.hcl:/consul/config/server.hcl:ro
+      - "./configs/consul:/scripts"
     ports:
       - 8500:8500
       - 8600:8600/tcp
@@ -28,45 +28,21 @@ services:
       vpcbr:
         ipv4_address: 10.5.0.2
 
-  ingress-gw:
+  ingress:
     image: nicholasjackson/consul-envoy:v1.11.2-v1.20.1
-    container_name: ingress-gw
+    container_name: ingress
     depends_on:
       - "web"
     environment:
       CONSUL_HTTP_ADDR: 10.5.0.2:8500
       CONSUL_GRPC_ADDR: 10.5.0.2:8502
-      CENTRAL_CONFIG_DIR: "/central_config"
+      CENTRAL_CONFIG_DIR: "/central"
     volumes:
-      - "./ingress-gateway:/scripts"
-      - "./fake-service/central_config:/central_config"
+      - "./configs/ingress:/scripts"
+      - "./configs/central:/central"
     command: [ "/bin/sh", "/scripts/entrypoint-gw.sh" ]
     ports:
       - 8080:8080
-    networks:
-      vpcbr:
-        ipv4_address: 10.5.0.6
-  ingress:
-    image: nicholasjackson/fake-service:vm-v1.10.7-v0.22.7
-    container_name: ingress
-    depends_on:
-      - "consul"
-    environment:
-      CONSUL_SERVER: 10.5.0.2
-      CONSUL_DATACENTER: "dc1"
-      SERVICE_ID: "ingress-v1"
-      SERVICE_CONFIG: /config/ingress-1.hcl
-      # CENTRAL_CONFIG: "/central_config/ingress_defaults.hcl"
-      LISTEN_ADDR: 0.0.0.0:9090
-      UPSTREAM_URIS: "http://localhost:9091"
-      MESSAGE: "Ingress Response"
-      NAME: "Ingress"
-      SERVER_TYPE: "http"
-    volumes:
-      - "./ingress:/config"
-      # - "./fake-service/central_config:/central_config"
-    ports:
-      - 9090:9090
     networks:
       vpcbr:
         ipv4_address: 10.5.0.3
@@ -82,7 +58,7 @@ services:
       CONSUL_DATACENTER: "dc1"
       SERVICE_ID: "web-v1"
       SERVICE_CONFIG: /config/web-1.hcl
-      # CENTRAL_CONFIG: "/central_config/web_defaults.hcl"
+      # CENTRAL_CONFIG: "/central/web_defaults.hcl"
       LISTEN_ADDR: 0.0.0.0:9090
       UPSTREAM_URIS: "http://localhost:9091"
       MESSAGE: "Web response"
@@ -90,8 +66,8 @@ services:
       SERVER_TYPE: "http"
       HTTP_CLIENT_APPEND_REQUEST: "true"
     volumes:
-      - "./web:/config"
-      # - "./fake-service/central_config:/central_config"
+      - "./configs/web:/config"
+      # - "./configs/central:/central"
     ports:
       - 9091:9090
     networks:
@@ -108,14 +84,14 @@ services:
       CONSUL_DATACENTER: "dc1"
       SERVICE_ID: "api-v1"
       SERVICE_CONFIG: /config/api-1.hcl
-      # CENTRAL_CONFIG: "/central_config/api_defaults.hcl"
+      # CENTRAL_CONFIG: "/central/api_defaults.hcl"
       LISTEN_ADDR: 0.0.0.0:9090
       MESSAGE: "API response"
       NAME: "Api"
       SERVER_TYPE: "http"
     volumes:
-      - "./api:/config"
-      # - "./fake-service/central_config:/central_config"
+      - "./configs/api:/config"
+      # - "./configs/central:/central"
     ports:
       - 9092:9090
     networks:
