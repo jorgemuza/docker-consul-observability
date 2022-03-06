@@ -25,6 +25,7 @@ ports {
 telemetry {
   prometheus_retention_time = "60s"
   disable_hostname = true
+  disable_compat_1.9 = true
 }
 
 service {

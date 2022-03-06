@@ -1,5 +1,5 @@
 Kind = "ingress-gateway"
-Name = "main-ingress"
+Name = "route-based-ingress"
 
 TLS {
   Enabled = false
@@ -20,4 +20,4 @@ Listeners = [
  }
 ]
 
-// consul connect envoy -gateway=ingress -register -service main-ingress -admin-bind="0.0.0.0:19001" -address '{{ GetInterfaceIP "eth0" }}:8889'
+// consul connect envoy -gateway=ingress -register -service route-based-ingress -admin-bind="0.0.0.0:19001" -address '{{ GetInterfaceIP "eth0" }}:8889'

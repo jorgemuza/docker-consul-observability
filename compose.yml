@@ -17,6 +17,7 @@ services:
       - 8500:8500
       - 8600:8600/tcp
       - 8600:8600/udp
+      - 19000:19000
     command:
       [
         "consul",
@@ -43,6 +44,7 @@ services:
     command: [ "/bin/sh", "/scripts/entrypoint-gw.sh" ]
     ports:
       - 8080:8080
+      - 8443:8443
     networks:
       vpcbr:
         ipv4_address: 10.5.0.3
@@ -58,7 +60,6 @@ services:
       CONSUL_DATACENTER: "dc1"
       SERVICE_ID: "web-v1"
       SERVICE_CONFIG: /config/web-1.hcl
-      # CENTRAL_CONFIG: "/central/web_defaults.hcl"
       LISTEN_ADDR: 0.0.0.0:9090
       UPSTREAM_URIS: "http://localhost:9091"
       MESSAGE: "Web response"
@@ -67,7 +68,6 @@ services:
       HTTP_CLIENT_APPEND_REQUEST: "true"
     volumes:
       - "./configs/web:/config"
-      # - "./configs/central:/central"
     ports:
       - 9091:9090
     networks:
@@ -84,14 +84,12 @@ services:
       CONSUL_DATACENTER: "dc1"
       SERVICE_ID: "api-v1"
       SERVICE_CONFIG: /config/api-1.hcl
-      # CENTRAL_CONFIG: "/central/api_defaults.hcl"
       LISTEN_ADDR: 0.0.0.0:9090
       MESSAGE: "API response"
       NAME: "Api"
       SERVER_TYPE: "http"
     volumes:
       - "./configs/api:/config"
-      # - "./configs/central:/central"
     ports:
       - 9092:9090
     networks:
